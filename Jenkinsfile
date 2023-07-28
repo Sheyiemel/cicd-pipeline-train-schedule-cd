@@ -9,9 +9,6 @@ pipeline {
             }
         }
         stage('DeployTovmone') {
-            when {
-                branch 'deployapp'
-            }
             steps {
                script {
                    sshagent(['vmone-cred']) {
