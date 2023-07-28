@@ -9,9 +9,6 @@ pipeline {
             }
         }
         stage('DeployTovmone') {
-            when {
-                branch 'deployapp'
-            }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'vmone-cred', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
                     sshPublisher(
