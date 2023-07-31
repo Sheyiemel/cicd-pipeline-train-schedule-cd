@@ -8,27 +8,26 @@ pipeline {
                 archiveArtifacts artifacts: 'dist/trainSchedule.zip'
             }
         }
-        stage('DeployTovmone') {
-           steps {
-                        // Define the SSH credentials to connect to the deployment server
-               withCredentials([sshUserPrivateKey(credentialsId: 'tf-key-pair', keyFileVariable: 'SSH_KEY')]) {
-                            // Transfer files from Jenkins workspace to the deployment server
-                   script {
-                                // Replace 'your-local-file.zip' with the path to the zip file in your Jenkins workspace
-                       sh 'scp -r dist/trainSchedule.zip ssh -o StrictHostKeyChecking=no -i "$SSH_KEY" ec2-user@3.92.19.13:/tmp/'
-                   }
-               }
-
-                        // Unzip the file on the deployment server
-               script {
-                   sshCommand remote: 'ec2-user@3.92.19.13', command: 'unzip /tmp/trainSchedule.zip -d /opt/train-schedule'
-               }
-
-                        // Start the application on the deployment server
-               script {
-                        sshCommand remote: 'ec2-user@3.92.19.13', command: 'cd /opt/train-schedule && ./start train-schedule'
-               }
-           }        
+        stages {
+       stage('Build Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                    sh 'docker build -t seyiemel/seyimages:train-schedule .'
+                    sh "echo $PASS | docker login -u $USER --password-stdin"
+                    sh 'docker push seyiemel/seyimages:train-schedule'
+                }
+            }
+        }
+        stage ('Deploy') {
+            steps {
+                script {
+                    echo 'deploying application'
+                    def dockerCmd = 'docker run  -p 8080:8080 -d seyiemel/seyimages:train-schedule:latest'
+                    sshagent(['tf-key-pair']) {
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@3.92.144.96 ${dockerCmd}"
+                    }
+                }
+            }
         }
     }
 }
