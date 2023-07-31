@@ -11,7 +11,7 @@ pipeline {
         stage('DeployTovmone') {
            steps {
                         // Define the SSH credentials to connect to the deployment server
-               sshagent(['vmone-cred']) {
+               sshagent(['tf-key-pair']) {
                             // Transfer files from Jenkins workspace to the deployment server
                    script {
                                 // Replace 'your-local-file.zip' with the path to the zip file in your Jenkins workspace
