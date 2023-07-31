@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    environment {
-        SSH_PRIVATE_KEY = credentials('tf-key-pair')
-    }
     stages {
         stage('Build') {
             steps {
@@ -18,7 +15,7 @@ pipeline {
                             // Transfer files from Jenkins workspace to the deployment server
                    script {
                                 // Replace 'your-local-file.zip' with the path to the zip file in your Jenkins workspace
-                       sh "scp -r dist/trainSchedule.zip ssh -i ${SSH_PRIVATE_KEY} ec2-user@3.92.19.13:/tmp/"
+                       sh 'scp -r dist/trainSchedule.zip ssh -i $SSH_KEY ec2-user@3.92.19.13:/tmp/'
                    }
                }
 
