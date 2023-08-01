@@ -10,8 +10,8 @@
 
 # EXPOSE 8080
 
-# CMD ["npm", "start"]
-Stage 1: Build stage
+# CMD ["npm", "start "]
+# Stage 1: Build stage
 FROM node:carbon-alpine AS builder
 
 WORKDIR /usr/src/app
@@ -38,4 +38,4 @@ RUN npm install --only=production
 
 EXPOSE 8080
 
-CMD ["npm", "start"]
+CMD ["npm", "start train-schedule"]
