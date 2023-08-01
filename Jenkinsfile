@@ -23,7 +23,7 @@ pipeline {
                    echo 'deploying application'
                    def dockerCmd = 'docker run  -p 8080:8080 -d seyiemel/seyimages:train-schedule:latest'
                    sshagent(['tf-key-pair']) {
-                       sh "ssh -o StrictHostKeyChecking=no ec2-user@3.92.144.96 ${dockerCmd}"
+                       sh "ssh -o StrictHostKeyChecking=no ec2-user@34.204.75.103 ${dockerCmd}"
                    }
                }
            }
