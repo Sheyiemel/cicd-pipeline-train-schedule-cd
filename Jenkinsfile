@@ -22,10 +22,11 @@ pipeline {
                withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                    script {
                        echo 'deploying application'
+                       def dockerlogin = "echo $PASS | docker login -u $USER --password-stdin"
                        def dockerCmd = 'docker run  -p 8080:8080 -d seyiemel/seyimages:train-schedule-1.0'
                        sshagent(['tf-key-pair']) {
                            sh "echo $PASS | docker login -u $USER --password-stdin"
-                           sh "ssh -o StrictHostKeyChecking=no ec2-user@34.204.75.103 ${dockerCmd}"
+                           sh "ssh -o StrictHostKeyChecking=no ec2-user@34.204.75.103 ${dockerlogin} ${dockerCmd}"
                        }
                    }
                }
