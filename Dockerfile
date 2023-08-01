@@ -36,6 +36,6 @@ COPY --from=builder /usr/src/app/dist ./dist
 # Install production dependencies only
 RUN npm install --only=production
 
-EXPOSE 8081
+EXPOSE 8080
 
 CMD ["npm", "start"]
