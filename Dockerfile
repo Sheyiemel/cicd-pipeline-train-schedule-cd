@@ -23,7 +23,6 @@ RUN npm install
 COPY . .
 
 # Build the application (replace "build" with the build command of your specific app)
-RUN npm run build
 
 # Stage 2: Runtime stage
 FROM node:carbon-alpine
