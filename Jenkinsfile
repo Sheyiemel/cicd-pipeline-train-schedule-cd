@@ -23,8 +23,8 @@ pipeline {
                    script {
                        echo 'deploying application'
                        sshagent(['tf-key-pair']) {
-                           sh "ssh -o StrictHostKeyChecking=no ec2-user@34.204.75.103 \"echo $PASS | docker login -u $USER --password-stdin\""
-                           sh "ssh -o StrictHostKeyChecking=no ec2-user@34.204.75.103 \"docker run --restart always --name train-schedule -p 8080:8080 -d seyiemel/seyimages:train-schedule-1.0\""
+                           sh "ssh -o StrictHostKeyChecking=no ec2-user@54.161.4.58 \"echo $PASS | docker login -u $USER --password-stdin\""
+                           sh "ssh -o StrictHostKeyChecking=no ec2-user@54.161.4.58 \"docker run --restart always --name train-schedule -p 8080:8080 -d seyiemel/seyimages:train-schedule-1.0\""
                        }
                    }
                }
