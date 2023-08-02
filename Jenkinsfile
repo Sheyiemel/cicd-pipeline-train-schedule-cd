@@ -14,6 +14,7 @@ pipeline {
                    sh 'docker build -t seyiemel/seyimages:train-schedule-1.0 .'
                    sh "echo $PASS | docker login -u $USER --password-stdin"
                    sh 'docker push seyiemel/seyimages:train-schedule-1.0'
+                   sh 'docker rmi seyiemel/seyimages:train-schedule-1.0'
                }
            }
        }
